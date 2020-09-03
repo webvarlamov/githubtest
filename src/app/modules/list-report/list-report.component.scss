@@ -1,0 +1,19 @@
+.Header {
+  display: flex;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+}
+
+.repo-list {
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+.repo-list .repo-list-item {
+  border-bottom: 1px solid lightgrey;
+}
+
+.repo-list .repo-list-item .language {
+  color: lightgray;
+}

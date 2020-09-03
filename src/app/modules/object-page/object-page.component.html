@@ -1,0 +1,14 @@
+<div class="bg-gray-light hide-full-screen mb-5 main">
+  <div class="d-flex mb-3 px-3 px-md-4 px-lg-5">
+    <h1 class=" d-flex flex-wrap flex-items-center break-word f3 text-normal">{{title | async}}</h1>
+  </div>
+  <p class="d-flex mb-3 px-3 px-md-4 px-lg-5">{{description | async}}</p>
+  <div class="mb-3 px-3 px-md-4 px-lg-5">
+    <ul>
+      <li *ngFor="let event of events | async">
+        {{event.action}}
+      </li>
+    </ul>
+  </div>
+</div>
+
