@@ -1,0 +1,11 @@
+<h3>Search settings</h3>
+<ul class="filters-container">
+  <li *ngFor="let keyValue of availableFilters$ | async | keyvalue" class="filter-settings-item d-flex flex-justify-start py-2 public source">
+    <label>{{keyValue.key}}</label>
+    <select class="form-select" aria-label="Important decision" (change)="onSearchFilterChange(keyValue.key, $event.target.value)">
+      <ng-container *ngFor="let option of keyValue.value">
+        <option [value]="option">{{option}}</option>
+      </ng-container>
+    </select>
+  </li>
+</ul>

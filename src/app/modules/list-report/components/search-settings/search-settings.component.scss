@@ -1,0 +1,13 @@
+:host {
+  padding: 20px;
+  overflow-y: scroll;
+}
+
+.filter-settings-item {
+  flex-direction: column;
+  padding: 0;
+  label {
+    margin-bottom: 5px;
+    text-transform: capitalize;
+  }
+}

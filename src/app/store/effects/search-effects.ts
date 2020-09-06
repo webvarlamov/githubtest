@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {searchInput} from '../actions/search.actions';
+import {searchFilterChange, searchInput} from '../actions/search.actions';
 import {debounceTime, switchMap} from 'rxjs/operators';
-import {loadListReportItems} from '../actions/list-report.actions';
+import {clearListReportItems, loadListReportItems, loadMoreListReportItems} from '../actions/list-report.actions';
 
 @Injectable()
 export class SearchEffects {
@@ -13,12 +13,28 @@ export class SearchEffects {
 
   onSearchInput = createEffect(() => this.actions.pipe(
     ofType(searchInput),
-    switchMap(action => {
+    debounceTime(500),
+    switchMap((action) => {
       if (action.searchInput !== undefined && action.searchInput !== null && action.searchInput.length > 0) {
         return [loadListReportItems()];
       } else {
-        return [];
+        return [clearListReportItems()];
       }
+    })
+  ));
+
+  onFilterChange = createEffect(() => this.actions.pipe(
+    ofType(searchFilterChange),
+    debounceTime(500),
+    switchMap(action => {
+      return [clearListReportItems(), loadListReportItems()];
+    })
+  ));
+
+  onLoadMore = createEffect(() => this.actions.pipe(
+    ofType(loadMoreListReportItems),
+    switchMap(action => {
+      return [loadListReportItems()];
     })
   ));
 }

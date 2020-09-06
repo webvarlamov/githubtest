@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {searchInput} from '../actions/search.actions';
-import {debounceTime, map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import {catchError, concatMap, debounceTime, map, mergeMap, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
 import {loadListReportItems, loadListReportItemsSuccess} from '../actions/list-report.actions';
 import {Store} from '@ngrx/store';
-import {selectSearchInput} from '../selectors/search-input.selectors';
+import {selectFiltersString, selectPage, selectSearchInput, selectUsedFilters} from '../selectors/search.selectors';
 import {DataProviderService} from '../../service/data-provider.service';
+import {of} from 'rxjs';
 
 @Injectable()
 export class ListReportEffects {
@@ -17,13 +17,23 @@ export class ListReportEffects {
   ) {}
 
   onLoadListReportItems = createEffect(() => this.actions.pipe(
-    ofType(searchInput),
-    withLatestFrom(this.store.select(selectSearchInput)),
-    debounceTime(500),
-    switchMap(([action, searchString]) => this.dataProviderService.getListItems(searchString)),
-    switchMap((listReportItems) => [
-      loadListReportItemsSuccess({listReportItems})
-    ])
-  ));
+    ofType(loadListReportItems),
+    withLatestFrom(
+      this.store.select(selectSearchInput),
+      this.store.select(selectFiltersString),
+      this.store.select(selectPage)
+    ),
+    mergeMap(([action, searchString, filtersString, page]) => this.dataProviderService.getListItems(searchString, page, filtersString).pipe(
+      take(1),
+      mergeMap((listReportData) => [
+        loadListReportItemsSuccess({
+          listReportItems: listReportData.items,
+          page,
+          totalCount: listReportData.totalCount
+        })
+      ]),
+      catchError(() => of(loadListReportItemsSuccess({listReportItems: [], page, totalCount: 0}))
+    ))
+  )));
 
 }

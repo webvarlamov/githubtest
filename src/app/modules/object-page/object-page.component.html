@@ -1,14 +1,38 @@
-<div class="bg-gray-light hide-full-screen mb-5 main">
-  <div class="d-flex mb-3 px-3 px-md-4 px-lg-5">
-    <h1 class=" d-flex flex-wrap flex-items-center break-word f3 text-normal">{{title | async}}</h1>
+<div class="bg-gray-light hide-full-screen mb-5 main" *ngIf="objectPageContent$ | async as content">
+  <div class="header-container py-3 px-3 px-md-4 px-lg-5">
+    <img style="height: 100px; width: 100px" [src]="content.owner.avatarUrl">
+    <h1 class="break-word f3 text-normal">
+     {{content.fullName}}
+    </h1>
+    <p>{{content.description}}</p>
   </div>
-  <p class="d-flex mb-3 px-3 px-md-4 px-lg-5">{{description | async}}</p>
-  <div class="mb-3 px-3 px-md-4 px-lg-5">
-    <ul>
-      <li *ngFor="let event of events | async">
-        {{event.action}}
+  <div class="additional-content">
+    <div class="additional-content-item">
+      <label>Forks</label>
+      <p>{{content.forks}}</p>
+    </div>
+    <div class="additional-content-item">
+      <label>Issues</label>
+      <p>{{content.openIssues}}</p>
+    </div>
+    <div class="additional-content-item">
+      <label>Create at</label>
+      <p>{{content.createdAt}}</p>
+    </div>
+  </div>
+  <ng-container *ngIf="(events$ | async) as events">
+    <ul class="events mb-3 px-3 px-md-4 px-lg-5" *ngIf="events.length > 0">
+      <li>
+        <label>Name</label>
+        <span>Action</span>
+        <span>Create at</span>
+      </li>
+      <li *ngFor="let event of events$ | async">
+        <label>{{event.name}}</label>
+        <span>{{event.action}}</span>
+        <span>{{event.createAt}}</span>
       </li>
     </ul>
-  </div>
+  </ng-container>
 </div>
 

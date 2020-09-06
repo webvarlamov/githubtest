@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {ListReportItem} from '../store/types/list-report/list-report-item';
 import {ObjectPageEvent} from '../store/types/object-page/object-page-event';
+import {ObjectPageContent} from '../store/types/object-page/object-page-content';
 
 @Injectable({
   providedIn: 'root'
@@ -26,9 +27,34 @@ export class DataAdapterService {
     return events.map(e => {
       return {
         action: e.payload.action,
-        createAt: e.created_at,
+        createAt: this.getDateTime(e.created_at),
         name: e.repo.name
       };
     });
+  }
+
+  toObjectPageContent(response: any): ObjectPageContent {
+    return {
+      id: response.id,
+      description: response.description,
+      name: response.name,
+      fullName: response.full_name,
+      owner: {
+        login: response.owner.login,
+        avatarUrl: response.owner.avatar_url
+      },
+      eventsURL: response.events_url,
+      createdAt: this.getDateTime(response.created_at),
+      forks: response.forks,
+      openIssues: response.open_issues
+    };
+  }
+
+  private getDateTime(createdAt: string) {
+    let result = '';
+    try {
+      result = createdAt.replace('T', ' ').replace('Z', '');
+    } catch (ignored) {}
+    return result;
   }
 }

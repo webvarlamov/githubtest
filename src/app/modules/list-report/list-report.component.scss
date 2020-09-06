@@ -1,13 +1,33 @@
+:host {
+  display: grid;
+  grid-template-rows: 50px 1fr;
+  grid-template-columns: 1fr 30%;
+  height: 100vh;
+}
+
 .Header {
   display: flex;
   justify-content: space-between;
   position: sticky;
   top: 0;
+  grid-column: 1/-1;
+}
+
+.Content {
+  display: grid;
+  grid-template-columns: 1fr 30%;
 }
 
 .repo-list {
-  margin-left: 20%;
-  margin-right: 20%;
+  padding: 0 20px;
+}
+
+app-search-settings {
+  border-left: 1px solid lightgray;
+}
+
+.search-settings-wrapper {
+  border-left: 1px solid lightgrey;
 }
 
 .repo-list .repo-list-item {
@@ -16,4 +36,51 @@
 
 .repo-list .repo-list-item .language {
   color: lightgray;
+}
+
+.repo-list p {
+  display: block; /* or inline-block */
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow: hidden;
+  max-height: 3.6em;
+  line-height: 1.8em;
+}
+
+.repo-item-text-wrapper {
+  display: block;
+  width: 100%;
+}
+
+a.repo-item-name {
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.load-more-button-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center !important;
+}
+
+.total-count {
+  margin-left: 15px;
+  white-space: nowrap;
+}
+
+.repo-ul-wrapper {
+  overflow-y: scroll;
+  position: relative;
+}
+
+.load-more-button-wrapper {
+  position: sticky;
+  bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
 }

@@ -5,3 +5,35 @@
 :host li {
   list-style-type: none;
 }
+
+.header-container {
+  position: sticky;
+  background-color: white;
+  top: 0;
+  border-bottom: 1px solid lightgray;
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  grid-template-rows: repeat(2, auto);
+  grid-gap: 15px;
+  p {
+    grid-row: 2;
+    grid-column: 2;
+  }
+  img {
+    grid-row: 1/ -1;
+  }
+}
+
+.additional-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 30px;
+}
+
+.events {
+  li {
+    display: grid;
+    grid-template-columns: 1fr 200px 250px;
+  }
+}
